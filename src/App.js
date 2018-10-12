@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-// import ListItem from './Components/ListItem';
+import icon from './globe-search.svg';
 
 class App extends Component {
   constructor(props) {
@@ -8,18 +8,17 @@ class App extends Component {
     this.state = {
       search: "",
       filteredCountries: [],
-      country: "",
       toggle: false,
     }
-    this.handleChange = this.handleChange.bind(this);
-    this.handleListClick = this.handleListClick.bind(this);
-    this.handleOnLoseFocus = this.handleOnLoseFocus.bind(this);
+    // this.handleChange = this.handleChange.bind(this);
+    // this.handleListClick = this.handleListClick.bind(this);
+    // this.handleOnLoseFocus = this.handleOnLoseFocus.bind(this);
   }
-  handleChange(e) {
+  handleChange = e => {
     this.setState({ search: e.target.value });
     this.searchMatches(this.props.list, e.target.value);
   }
-  searchMatches(arr, search){
+  searchMatches = (arr, search) => {
     if (search !== "") {
       this.setState({
         filteredCountries: arr.filter((item) => (
@@ -30,23 +29,37 @@ class App extends Component {
       this.setState({ filteredCountries: [] });
     }
   }
-  handleListClick(e) {
-    console.log(e.target.text);
-    this.setState({ search: e.target.data("country"), filteredCountries: [] });
+  handleListClick = item => {
+    console.log("Selected:", item);
+    return this.setState({ search: item, filteredCountries: [] });
   }
-  handleOnLoseFocus(text) {
-    this.setState({ filteredCountries: [] });
+
+  handleOnLoseFocus = () => {
+    if (this.props.list.indexOf(this.state.search) > -1) {
+      this.setState({ filteredCountries: [] });
+    } else {
+      this.setState({ search: "", filteredCountries: [] });
+    }
+  }
+
+  handleFormSubmit = () => {
+
   }
 
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">Sample autocomplete search</h1>
+          <h1 className="App-title">
+          SEARCH THE GL<img src={icon} alt="logo" className="titleIcon"/>BE
+          </h1>
         </header>
         <br />
         <div className="container">
           <div>
+            <p>
+              If you need to find information about a country you came to the rigth place. Type the name of the country in the search box to get started.
+            </p>
             <form autoComplete="off">
               <div className="form-group">
                 <label htmlFor="exampleInputEmail1">Country</label>
@@ -63,21 +76,27 @@ class App extends Component {
                     {this.state.filteredCountries.map((item, index) => (
                       <div className="list-group-item align-items-start"
                         key={index}
-                        data-item={item}
-                        onClick={this.handleListClick}>
+                        onClick={() => this.handleListClick(item)}
+                      >
                         <strong>{item.substr(0, this.state.search.length)}</strong>
                         {item.substr(this.state.search.length)}
                       </div>
                     ))}
                   </div>
 
+
                 </div>
 
               </div>
+              <button id="search-btn" type="submit" class="btn btn-primary">Search</button>
             </form>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis qui quas, consequatur doloribus voluptates magni suscipit amet! Nam at, aut quam eveniet voluptatem expedita explicabo nobis ratione deserunt. Voluptas eius quas ut sit autem dolores at voluptates, nobis laboriosam! Possimus minima praesentium minus deleniti non, odio ad officia corporis, impedit facilis temporibus sapiente. Deserunt, odio? Est praesentium aliquid assumenda, ex accusantium neque, quia placeat, dignissimos temporibus consequatur doloremque labore quibusdam obcaecati consequuntur eveniet quam id necessitatibus fugiat fugit tempora rem? Eaque atque maxime quos porro quam molestias iusto id similique deleniti exercitationem laboriosam hic rem, eveniet voluptatum eius necessitatibus perspiciatis?
-            </p>
+            <br />
+
+            <div className="country-info">
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis qui quas, consequatur doloribus voluptates magni suscipit amet! Nam at, aut quam eveniet voluptatem expedita explicabo nobis ratione deserunt. Voluptas eius quas ut sit autem dolores at voluptates, nobis laboriosam! 
+              </p>
+            </div>
           </div>
         </div>
       </div>

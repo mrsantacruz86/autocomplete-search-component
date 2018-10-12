@@ -35,3 +35,11 @@
   border: 1px solid #ced4da;
   border: none;
 }
+form{
+  text-align: center;
+}
+
+.titleIcon{
+  height: 1.57rem;
+  vertical-align: -3%;
+}
