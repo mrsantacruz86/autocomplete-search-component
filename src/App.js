@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+// import ReactDOM  from 'react-dom';
 import './App.css';
 import icon from './globe-search.svg';
 
@@ -7,6 +8,7 @@ class App extends Component {
     super(props);
     this.state = {
       search: "",
+      selected:false,
       filteredCountries: [],
       toggle: false,
     }
@@ -34,16 +36,15 @@ class App extends Component {
     return this.setState({ search: item, filteredCountries: [] });
   }
 
-  handleOnLoseFocus = () => {
-    if (this.props.list.indexOf(this.state.search) > -1) {
-      this.setState({ filteredCountries: [] });
-    } else {
-      this.setState({ search: "", filteredCountries: [] });
-    }
-  }
+  // handleOnLoseFocus = (e) => {
+  //   console.log("Log the event",document.activeElement);
+  //   this.setState({ filteredCountries: [] });
+  // }
 
-  handleFormSubmit = () => {
-
+  handleFormSubmit = (e) => {
+    e.preventDefault();
+    console.log("Form Submitted");
+    this.setState({ search: "", filteredCountries: [] });
   }
 
   render() {
@@ -51,7 +52,7 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <h1 className="App-title">
-          SEARCH THE GL<img src={icon} alt="logo" className="titleIcon"/>BE
+            SEARCH THE GL<img src={icon} alt="logo" className="titleIcon" />BE
           </h1>
         </header>
         <br />
@@ -60,7 +61,7 @@ class App extends Component {
             <p>
               If you need to find information about a country you came to the rigth place. Type the name of the country in the search box to get started.
             </p>
-            <form autoComplete="off">
+            <form autoComplete="off" onSubmit={this.handleFormSubmit}>
               <div className="form-group">
                 <label htmlFor="exampleInputEmail1">Country</label>
                 <div className="autocomplete">
@@ -69,9 +70,9 @@ class App extends Component {
                     id="searchbox"
                     placeholder="Start Typing"
                     onChange={this.handleChange}
-                    onBlur={this.handleOnLoseFocus}
                     value={this.state.search}
-                  />
+                    // onBlur={this.handleOnLoseFocus}
+                    />
                   <div className="list-group search-results" aria-labelledby="searchbox">
                     {this.state.filteredCountries.map((item, index) => (
                       <div className="list-group-item align-items-start"
@@ -88,13 +89,13 @@ class App extends Component {
                 </div>
 
               </div>
-              <button id="search-btn" type="submit" class="btn btn-primary">Search</button>
+              <button id="search-btn" type="submit" className="btn btn-primary">Search</button>
             </form>
             <br />
 
             <div className="country-info">
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis qui quas, consequatur doloribus voluptates magni suscipit amet! Nam at, aut quam eveniet voluptatem expedita explicabo nobis ratione deserunt. Voluptas eius quas ut sit autem dolores at voluptates, nobis laboriosam! 
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis qui quas, consequatur doloribus voluptates magni suscipit amet! Nam at, aut quam eveniet voluptatem expedita explicabo nobis ratione deserunt. Voluptas eius quas ut sit autem dolores at voluptates, nobis laboriosam!
               </p>
             </div>
           </div>
