@@ -2,24 +2,23 @@ import React, { Component } from 'react';
 // import ReactDOM  from 'react-dom';
 import './App.css';
 import icon from './globe-search.svg';
+import API from './utils/API';
+import CountryCard from './Components/CountryCard';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       search: "",
-      selected:false,
-      filteredCountries: [],
-      toggle: false,
+      selectedCountry: {},
+      filteredCountries: []
     }
-    // this.handleChange = this.handleChange.bind(this);
-    // this.handleListClick = this.handleListClick.bind(this);
-    // this.handleOnLoseFocus = this.handleOnLoseFocus.bind(this);
   }
   handleChange = e => {
     this.setState({ search: e.target.value });
     this.searchMatches(this.props.list, e.target.value);
   }
+
   searchMatches = (arr, search) => {
     if (search !== "") {
       this.setState({
@@ -36,15 +35,16 @@ class App extends Component {
     return this.setState({ search: item, filteredCountries: [] });
   }
 
-  // handleOnLoseFocus = (e) => {
-  //   console.log("Log the event",document.activeElement);
-  //   this.setState({ filteredCountries: [] });
-  // }
-
   handleFormSubmit = (e) => {
     e.preventDefault();
     console.log("Form Submitted");
-    this.setState({ search: "", filteredCountries: [] });
+    API.getCountry(this.state.search, country => {
+      this.setState({
+        selectedCountry: country,
+        search: "",
+        filteredCountries: []
+      });
+    });
   }
 
   render() {
@@ -58,12 +58,8 @@ class App extends Component {
         <br />
         <div className="container">
           <div>
-            <p>
-              If you need to find information about a country you came to the rigth place. Type the name of the country in the search box to get started.
-            </p>
             <form autoComplete="off" onSubmit={this.handleFormSubmit}>
               <div className="form-group">
-                <label htmlFor="exampleInputEmail1">Country</label>
                 <div className="autocomplete">
                   <input type="text"
                     className="form-control"
@@ -71,8 +67,7 @@ class App extends Component {
                     placeholder="Start Typing"
                     onChange={this.handleChange}
                     value={this.state.search}
-                    // onBlur={this.handleOnLoseFocus}
-                    />
+                  />
                   <div className="list-group search-results" aria-labelledby="searchbox">
                     {this.state.filteredCountries.map((item, index) => (
                       <div className="list-group-item align-items-start"
@@ -92,9 +87,11 @@ class App extends Component {
             <br />
 
             <div className="country-info">
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis qui quas, consequatur doloribus voluptates magni suscipit amet! Nam at, aut quam eveniet voluptatem expedita explicabo nobis ratione deserunt. Voluptas eius quas ut sit autem dolores at voluptates, nobis laboriosam!
-              </p>
+              {
+                this.state.selectedCountry.name ?
+                <CountryCard {...this.state.selectedCountry} /> :
+                  <p className="text-center">Please select a country to see its data.</p>
+              }
             </div>
           </div>
         </div>
