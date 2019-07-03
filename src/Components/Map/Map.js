@@ -1,22 +1,21 @@
-import React, { Component } from 'react';
-import GoogleMapReact from 'google-map-react';
+import React, { Component } from "react";
 
 class CountryMap extends Component {
+  componentDidMount() {
+    const google = window.google;
+    new google.maps.Map(this.refs.map, {
+      zoom: 5,
+      center: {
+        lat: this.props.lat,
+        lng: this.props.lng
+      }
+    });
+  }
 
   render() {
-    let center = {
-      lat: this.props.lat,
-      lng: this.props.lng
-    }
     return (
       // Important! Always set the container height explicitly
-      <div style={{ height: '400px' , width: '100%' }}>
-        <GoogleMapReact
-          bootstrapURLKeys={{ key: "AIzaSyB4wbNsCXGWAnl77rR9Rj_7X5Lt7AuGJEI" }}
-          defaultCenter={center}
-          defaultZoom={3}
-        />
-      </div>
+      <div ref="map" style={{ height: "400px", width: "100%" }} />
     );
   }
 }
